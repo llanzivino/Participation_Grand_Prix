@@ -298,17 +298,12 @@
 <script>
 (function(){
   /* ===================================================================
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAylOB7yC54Tb-ndjlI2wpTSStJF7jMbuA",
-  authDomain: "participation-grand-prix.firebaseapp.com",
-  databaseURL: "https://participation-grand-prix-default-rtdb.firebaseio.com",
-  projectId: "participation-grand-prix",
-  storageBucket: "participation-grand-prix.firebasestorage.app",
-  messagingSenderId: "602352526999",
-  appId: "1:602352526999:web:9826f99254f4d43b4debd2",
-  measurementId: "G-JHKW4PZW26"
-};
+     STEP 1 — PASTE YOUR FIREBASE CONFIG HERE
+     Get this from the Firebase console:
+       Project settings (gear icon) → "Your apps" → Web app → Config.
+     These values are NOT secret — they are meant to live in client code,
+     so it is safe to commit them to a public GitHub repo.
+     Make sure "databaseURL" is filled in (Realtime Database, not Firestore).
      =================================================================== */
   const FIREBASE_CONFIG = {
     apiKey:            "PASTE_API_KEY",
@@ -329,7 +324,7 @@ const firebaseConfig = {
     {id:4,name:"Group 4",color:"var(--t4)",members:["Chalo Valls","Jessica Taeza","Mark Oriol","Rob Burge","Robert Lawrence"]},
     {id:5,name:"Group 5",color:"var(--t5)",members:["Amber Hatfield-Donohew","Matthew Veigl","Nick Custis","Nikhil Ghode","Yemisi Ikuomola"]},
   ];
-  const ME = "Laura Lee Anzivino";
+  const ME = ""; // set to a name to tag "you" on the board; empty = no tag
   const LKEY = "participation-race-local"; // browser fallback when no Firebase config
   const STUDENTS = [];
   TEAMS.forEach(t=>t.members.forEach((m,i)=>STUDENTS.push({id:"t"+t.id+"-"+i,name:m,teamId:t.id})));
@@ -340,7 +335,7 @@ const firebaseConfig = {
   const lastName = n => { const p=n.trim().split(/\s+/); return p[p.length-1]; };
 
   function blank(){
-    return {version:2, classNum:1, points:{}, dayPoints:{}, log:[], awards:[], pin:""};
+    return {version:2, classNum:1, points:{}, dayPoints:{}, log:[], awards:[], pin:"6394"};
   }
   function migrate(s){
     if(!s || typeof s!=="object") return blank();
@@ -777,7 +772,7 @@ const firebaseConfig = {
     } else {
       // No Firebase config yet -> run locally so the page still works
       try{ const raw=localStorage.getItem(LKEY); if(raw){ state=migrate(JSON.parse(raw)); lastRaw=raw; } }catch(e){}
-      noticeMsg = "Demo mode — no database connected yet. Scores save only in this browser. Add your Firebase config near the top of index.html to enable shared saving across everyone's screens.";
+      noticeMsg = "";
       render();
     }
   }
