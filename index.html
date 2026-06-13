@@ -1,0 +1,786 @@
+<!-- EMBA Class of 2027 — Participation Grand Prix -->
+<div id="root">
+  <div class="boot">Warming up the grid…</div>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:#0c2f24;
+    --bg2:#0f3d2e;
+    --surface:#123f30;
+    --surface2:#16523d;
+    --line:#27604b;
+    --ink:#f4f0e4;
+    --muted:#9cbcab;
+    --muted2:#6f9382;
+    --orange:#ef7d27;
+    --orange-soft:#ffb070;
+    --gold:#ecc34a;
+    --track:#0a261d;
+    --t1:#ef7d27;
+    --t2:#34b1a8;
+    --t3:#ecc34a;
+    --t4:#e0715a;
+    --t5:#8f7ce0;
+    --good:#5fcf9b;
+    --warn:#f0b54a;
+    --radius:14px;
+    --shadow:0 18px 40px -22px rgba(0,0,0,.7);
+  }
+
+  *{box-sizing:border-box}
+  #root{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 80% -10%, #1a5a42 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #11402f 0%, transparent 55%),
+      var(--bg);
+    min-height:100%;
+    padding:22px clamp(14px,3vw,34px) 40px;
+    line-height:1.5;
+  }
+  .boot{font-family:'Saira Condensed';font-size:22px;letter-spacing:.04em;color:var(--muted);padding:60px 10px}
+
+  .notice{
+    border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13.5px;line-height:1.5;
+    border:1px solid var(--line);
+  }
+  .notice.demo{background:rgba(240,181,74,.1);border-color:rgba(240,181,74,.4);color:#f3d089}
+  .notice.err{background:rgba(224,113,90,.12);border-color:rgba(224,113,90,.45);color:#f0a594}
+
+  /* ---------- header ---------- */
+  .top{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:18px;flex-wrap:wrap;margin-bottom:20px;
+  }
+  .brandline{
+    font-family:'Saira Condensed';font-weight:600;
+    text-transform:uppercase;letter-spacing:.22em;font-size:12.5px;
+    color:var(--orange-soft);display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .brandline .div{width:7px;height:7px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(239,125,39,.18)}
+  h1{
+    font-family:'Saira Condensed';font-weight:800;text-transform:uppercase;
+    font-size:clamp(34px,6vw,62px);line-height:.92;letter-spacing:.01em;
+    margin:6px 0 0;color:var(--ink);
+  }
+  h1 .em{color:var(--orange)}
+  .live{
+    display:inline-flex;align-items:center;gap:9px;
+    background:rgba(95,207,155,.1);border:1px solid rgba(95,207,155,.35);
+    color:var(--good);border-radius:999px;padding:6px 13px;
+    font-family:'Saira Condensed';font-weight:600;letter-spacing:.12em;font-size:12px;text-transform:uppercase;
+  }
+  .live .pulse{width:9px;height:9px;border-radius:50%;background:var(--good);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(95,207,155,.55)}70%{box-shadow:0 0 0 8px rgba(95,207,155,0)}100%{box-shadow:0 0 0 0 rgba(95,207,155,0)}}
+  .updated{font-size:11.5px;color:var(--muted2);margin-top:6px;text-align:right}
+
+  /* ---------- session bar ---------- */
+  .sessionbar{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    background:linear-gradient(180deg,var(--surface) 0%,var(--bg2) 100%);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px 16px;margin-bottom:18px;box-shadow:var(--shadow);
+  }
+  .sess-label{font-family:'Saira Condensed';text-transform:uppercase;letter-spacing:.16em;font-size:12px;color:var(--muted)}
+  .sess-num{font-family:'Saira Condensed';font-weight:800;font-size:30px;line-height:1;color:var(--ink)}
+  .sess-dots{display:flex;gap:9px;flex-wrap:wrap;margin-left:auto;align-items:center}
+  .sdot{
+    display:flex;align-items:center;gap:6px;font-family:'Saira Condensed';
+    font-size:13px;letter-spacing:.04em;padding:5px 10px;border-radius:999px;
+    border:1px solid var(--line);background:var(--track);color:var(--muted);
+  }
+  .sdot .bead{width:9px;height:9px;border-radius:50%;background:var(--muted2)}
+  .sdot.in{border-color:rgba(95,207,155,.45);color:var(--good);background:rgba(95,207,155,.08)}
+  .sdot.in .bead{background:var(--good)}
+  .sdot.out{border-color:rgba(240,181,74,.4);color:var(--warn)}
+  .sdot.out .bead{background:var(--warn);animation:pulse2 1.8s infinite}
+  @keyframes pulse2{0%{opacity:1}50%{opacity:.35}100%{opacity:1}}
+
+  /* ---------- race ---------- */
+  .panel{
+    background:linear-gradient(180deg,var(--surface) 0%,var(--bg2) 100%);
+    border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+    padding:18px clamp(14px,2.5vw,24px);margin-bottom:18px;
+  }
+  .panel-h{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-bottom:16px;flex-wrap:wrap;
+  }
+  .panel-h h2{
+    font-family:'Saira Condensed';font-weight:700;text-transform:uppercase;
+    letter-spacing:.08em;font-size:18px;margin:0;color:var(--ink);
+  }
+  .panel-h .hint{font-size:12px;color:var(--muted2)}
+  .seg{display:inline-flex;background:var(--track);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+  .segbtn{
+    font-family:'Saira Condensed';font-weight:600;font-size:12.5px;letter-spacing:.05em;
+    padding:5px 12px;border-radius:999px;border:0;background:transparent;color:var(--muted);
+    cursor:pointer;transition:.14s;
+  }
+  .segbtn:hover{color:var(--ink)}
+  .segbtn.active{background:var(--orange);color:#1a0f06}
+
+  .track{position:relative}
+  .lane{
+    position:relative;display:grid;grid-template-columns:34px 1fr auto;
+    align-items:center;gap:12px;padding:9px 0;
+  }
+  .lane + .lane{border-top:1px dashed rgba(255,255,255,.06)}
+  .rank{
+    font-family:'Saira Condensed';font-weight:800;font-size:20px;
+    width:34px;height:34px;display:grid;place-items:center;border-radius:9px;
+    background:var(--track);color:var(--muted);border:1px solid var(--line);
+  }
+  .lane.leader .rank{background:var(--orange);color:#1a0f06;border-color:var(--orange)}
+  .strip{
+    position:relative;height:40px;border-radius:9px;background:var(--track);
+    border:1px solid var(--line);overflow:hidden;
+  }
+  .strip::after{
+    content:"";position:absolute;top:0;right:0;height:100%;width:14px;
+    background-image:
+      linear-gradient(45deg,rgba(255,255,255,.16) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.16) 75%),
+      linear-gradient(45deg,rgba(255,255,255,.16) 25%,transparent 25%,transparent 75%,rgba(255,255,255,.16) 75%);
+    background-size:8px 8px;background-position:0 0,4px 4px;opacity:.5;
+  }
+  .fill{
+    position:absolute;top:0;left:0;height:100%;border-radius:9px;
+    transition:width 1.05s cubic-bezier(.22,1,.36,1);
+    background:linear-gradient(90deg,rgba(255,255,255,.04),var(--tc));
+    min-width:42px;
+  }
+  .car{
+    position:absolute;top:50%;transform:translate(-50%,-50%);
+    transition:left 1.05s cubic-bezier(.22,1,.36,1);
+    display:flex;align-items:center;gap:7px;white-space:nowrap;
+    font-family:'Saira Condensed';font-weight:700;letter-spacing:.03em;
+    font-size:14px;color:#0c2218;padding:0 4px;
+  }
+  .badge{
+    width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+    background:var(--tc);box-shadow:0 0 0 3px rgba(0,0,0,.18);font-size:13px;
+  }
+  .lane.leader .car .crown{filter:drop-shadow(0 0 6px rgba(236,195,74,.8))}
+  .lanename{color:var(--ink);text-shadow:0 1px 2px rgba(0,0,0,.45)}
+  .pts{
+    font-family:'Saira Condensed';font-weight:800;font-size:24px;min-width:78px;
+    text-align:right;color:var(--ink);
+  }
+  .pts small{display:block;font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted2);text-transform:uppercase}
+  .lane.leader .pts{color:var(--orange-soft)}
+
+  /* ---------- columns ---------- */
+  .cols{display:grid;grid-template-columns:1.05fr 1fr;gap:18px}
+  @media(max-width:860px){.cols{grid-template-columns:1fr}}
+
+  /* award */
+  .locked{
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    text-align:center;padding:26px 10px;color:var(--muted);
+  }
+  .locked .ico{font-size:30px}
+  .teamtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .ttab{
+    font-family:'Saira Condensed';font-weight:600;font-size:14px;letter-spacing:.04em;
+    padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--track);color:var(--muted);cursor:pointer;transition:.15s;
+  }
+  .ttab .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--tc);margin-right:7px;vertical-align:middle}
+  .ttab:hover{border-color:var(--tc);color:var(--ink)}
+  .ttab.active{background:var(--tc);color:#10241a;border-color:var(--tc)}
+  .ttab.active .dot{background:#10241a;opacity:.5}
+
+  .roster{display:flex;flex-direction:column;gap:7px}
+  .srow{
+    display:grid;grid-template-columns:32px 1fr auto auto;align-items:center;gap:11px;
+    background:var(--track);border:1px solid var(--line);border-radius:11px;padding:8px 11px;
+  }
+  .snamewrap{min-width:0}
+  .ava{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-family:'Saira Condensed';font-weight:700;font-size:13px;color:#10241a;background:var(--tc)}
+  .sname{font-weight:600;font-size:14.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sname .me{font-size:10px;letter-spacing:.1em;color:var(--orange-soft);text-transform:uppercase;margin-left:6px}
+  .scount{font-family:'Saira Condensed';font-weight:800;font-size:19px;color:var(--muted);min-width:30px;text-align:right}
+  .scount.has{color:var(--ink)}
+  .addbtns{display:flex;gap:5px}
+  .ab{
+    font-family:'Saira Condensed';font-weight:700;font-size:13px;
+    border:1px solid var(--line);background:var(--surface2);color:var(--ink);
+    width:34px;height:30px;border-radius:8px;cursor:pointer;transition:.12s;
+  }
+  .ab:hover{background:var(--orange);color:#1a0f06;border-color:var(--orange);transform:translateY(-1px)}
+  .ab:active{transform:translateY(0)}
+  .ab.minus{color:var(--muted);background:transparent}
+  .ab.minus:hover{background:var(--t4);color:#1a0f06;border-color:var(--t4)}
+
+  /* individuals */
+  .podium{display:flex;flex-direction:column;gap:8px}
+  .prow{
+    display:grid;grid-template-columns:30px 30px 1fr auto;align-items:center;gap:11px;
+    padding:9px 11px;border-radius:11px;background:var(--track);border:1px solid var(--line);
+    transition:background .4s;
+  }
+  .prow.top{border-color:rgba(236,195,74,.4);background:linear-gradient(90deg,rgba(236,195,74,.1),var(--track))}
+  .prnk{font-family:'Saira Condensed';font-weight:800;font-size:18px;color:var(--muted)}
+  .prow.top .prnk{color:var(--gold)}
+  .pname{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pteam{font-size:11px;color:var(--muted2)}
+  .ppts{font-family:'Saira Condensed';font-weight:800;font-size:20px;color:var(--ink)}
+  .empty{color:var(--muted2);font-size:13px;text-align:center;padding:24px 0}
+
+  /* activity */
+  .feed{display:flex;flex-direction:column;gap:0}
+  .fitem{display:flex;align-items:center;gap:11px;padding:9px 2px;font-size:13.5px;color:var(--muted)}
+  .fitem + .fitem{border-top:1px solid rgba(255,255,255,.05)}
+  .fdot{width:9px;height:9px;border-radius:50%;background:var(--tc);flex:none}
+  .fitem b{color:var(--ink);font-weight:600}
+  .fitem .amt{margin-left:auto;font-family:'Saira Condensed';font-weight:700;color:var(--good)}
+  .fitem .amt.neg{color:var(--t4)}
+
+  /* special awards */
+  .btn.sm{padding:7px 13px;font-size:13px}
+  .awardform{
+    display:flex;gap:9px;flex-wrap:wrap;align-items:center;
+    background:var(--track);border:1px solid var(--line);border-radius:12px;
+    padding:12px;margin-bottom:14px;
+  }
+  .awardform input[type=text]{
+    flex:1;min-width:220px;background:var(--bg2);border:1px solid var(--line);
+    border-radius:9px;padding:10px 12px;color:var(--ink);font-family:'Inter';font-size:14px;
+  }
+  .awardform input::placeholder{color:var(--muted2)}
+  .awardform select{
+    background:var(--bg2);border:1px solid var(--line);border-radius:9px;
+    padding:10px 12px;color:var(--ink);font-family:'Inter';font-size:14px;max-width:230px;
+  }
+  .award{display:flex;align-items:center;gap:12px;padding:11px 2px}
+  .award + .award{border-top:1px solid rgba(255,255,255,.05)}
+  .medal{font-size:20px;filter:drop-shadow(0 0 6px rgba(236,195,74,.35));flex:none}
+  .awrap{min-width:0;flex:1}
+  .atitle{font-weight:700;color:var(--ink);font-size:14.5px}
+  .arecipient{font-size:12.5px;color:var(--muted)}
+  .aremove{
+    flex:none;width:26px;height:26px;border-radius:7px;border:1px solid var(--line);
+    background:transparent;color:var(--muted2);cursor:pointer;font-size:13px;transition:.14s;
+  }
+  .aremove:hover{border-color:var(--t4);color:var(--t4)}
+  .fitem .when{color:var(--muted2);font-size:11px;flex:none}
+
+  /* controls / footer */
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:6px}
+  .btn{
+    font-family:'Saira Condensed';font-weight:700;letter-spacing:.04em;font-size:14px;
+    padding:10px 16px;border-radius:10px;cursor:pointer;border:1px solid var(--line);
+    background:var(--surface2);color:var(--ink);transition:.14s;
+  }
+  .btn:hover{border-color:var(--orange);color:var(--orange-soft)}
+  .btn.primary{background:var(--orange);color:#1a0f06;border-color:var(--orange)}
+  .btn.primary:hover{background:var(--orange-soft);color:#1a0f06}
+  .btn.ghost{background:transparent}
+  .btn.danger:hover{border-color:var(--t4);color:var(--t4)}
+  .spacer{flex:1}
+  .note{font-size:11.5px;color:var(--muted2);margin-top:14px;line-height:1.6}
+  .note b{color:var(--muted)}
+  :focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important}
+  }
+</style>
+
+<!-- Firebase Realtime Database (free, real-time, multi-user) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+(function(){
+  /* ===================================================================
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAylOB7yC54Tb-ndjlI2wpTSStJF7jMbuA",
+  authDomain: "participation-grand-prix.firebaseapp.com",
+  databaseURL: "https://participation-grand-prix-default-rtdb.firebaseio.com",
+  projectId: "participation-grand-prix",
+  storageBucket: "participation-grand-prix.firebasestorage.app",
+  messagingSenderId: "602352526999",
+  appId: "1:602352526999:web:9826f99254f4d43b4debd2",
+  measurementId: "G-JHKW4PZW26"
+};
+     =================================================================== */
+  const FIREBASE_CONFIG = {
+    apiKey:            "PASTE_API_KEY",
+    authDomain:        "PASTE_PROJECT.firebaseapp.com",
+    databaseURL:       "https://PASTE_PROJECT-default-rtdb.firebaseio.com",
+    projectId:         "PASTE_PROJECT",
+    storageBucket:     "PASTE_PROJECT.appspot.com",
+    messagingSenderId: "PASTE_SENDER_ID",
+    appId:             "PASTE_APP_ID"
+  };
+  // ===================================================================
+
+  // ---------- roster ----------
+  const TEAMS = [
+    {id:1,name:"Group 1",color:"var(--t1)",members:["Folarin Falade","Rachna Agrawal","Rosemary Dirks","Rotshak Dakup","Siva Harikumar"]},
+    {id:2,name:"Group 2",color:"var(--t2)",members:["Cherie Patel","Justin Dirks","Muhammad Raffat","Natalie Garcia Zuluaga","Yumeng Sha"]},
+    {id:3,name:"Group 3",color:"var(--t3)",members:["Ed Daffron","Felipe Aguilar","Laura Lee Anzivino","Leo Lin","Wasim Khan"]},
+    {id:4,name:"Group 4",color:"var(--t4)",members:["Chalo Valls","Jessica Taeza","Mark Oriol","Rob Burge","Robert Lawrence"]},
+    {id:5,name:"Group 5",color:"var(--t5)",members:["Amber Hatfield-Donohew","Matthew Veigl","Nick Custis","Nikhil Ghode","Yemisi Ikuomola"]},
+  ];
+  const ME = "Laura Lee Anzivino";
+  const LKEY = "participation-race-local"; // browser fallback when no Firebase config
+  const STUDENTS = [];
+  TEAMS.forEach(t=>t.members.forEach((m,i)=>STUDENTS.push({id:"t"+t.id+"-"+i,name:m,teamId:t.id})));
+  const sid = id => STUDENTS.find(s=>s.id===id);
+  const team = id => TEAMS.find(t=>t.id===id);
+  const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  const firstLast = n => { const p=n.split(/\s+/); return p.length>1 ? p[0]+" "+p[p.length-1][0]+"." : n; };
+  const lastName = n => { const p=n.trim().split(/\s+/); return p[p.length-1]; };
+
+  function blank(){
+    return {version:2, classNum:1, points:{}, dayPoints:{}, log:[], awards:[], pin:""};
+  }
+  function migrate(s){
+    if(!s || typeof s!=="object") return blank();
+    if(!s.points) s.points = {};
+    if(!s.dayPoints) s.dayPoints = {};
+    if(!Array.isArray(s.log)) s.log = [];
+    if(!Array.isArray(s.awards)) s.awards = [];
+    if(typeof s.classNum!=="number") s.classNum = 1;
+    if(typeof s.pin!=="string") s.pin = "";
+    s.version = 2;
+    delete s.participation; // legacy: participation is now derived from dayPoints
+    return s;
+  }
+
+  // ---------- state ----------
+  let state = blank();
+  let lastRaw = "";
+  let edit = false;
+  let activeTeam = 3; // start on Laura's team
+  let topN = 5;       // Top voices filter: 5 / 10 / Infinity (all)
+  let nameSort = 'first'; // roster sort: 'first' or 'last'
+  let awardFormOpen = false;
+  let awardDraftTitle = "";
+  let awardDraftRecipient = ""; // student id or "" for none
+  let noticeMsg = "";           // banner shown at top (demo mode / errors)
+  const root = document.getElementById('root');
+
+  // ---------- storage ----------
+  let dbRef = null, useFirebase = false;
+
+  function initStore(){
+    try{
+      const cfg = FIREBASE_CONFIG;
+      if(!window.firebase || !cfg.databaseURL || /PASTE/.test(cfg.databaseURL)) return false;
+      firebase.initializeApp(cfg);
+      dbRef = firebase.database().ref('participationRace/state');
+      useFirebase = true;
+      return true;
+    }catch(e){ console.error('Firebase init failed', e); return false; }
+  }
+
+  async function save(){
+    const raw = JSON.stringify(state);
+    lastRaw = raw;
+    if(useFirebase){
+      try{ await dbRef.set(raw); }
+      catch(e){ console.error('save failed', e); noticeMsg = "Couldn't save to the database — check your database rules (read/write must be allowed)."; render(); }
+    } else {
+      try{ localStorage.setItem(LKEY, raw); }catch(e){}
+    }
+  }
+
+  // ---------- derive ----------
+  function teamTotals(){
+    return TEAMS.map(t=>{
+      let pts=0; t.members.forEach((m,i)=>pts += state.points["t"+t.id+"-"+i]||0);
+      return {id:t.id,name:t.name,color:t.color,pts};
+    });
+  }
+  function participatedThisClass(teamId){
+    const dp = state.dayPoints[state.classNum]||{};
+    const t = team(teamId);
+    return t.members.some((m,i)=> (dp["t"+teamId+"-"+i]||0) > 0);
+  }
+  function topIndividuals(n){
+    return STUDENTS.map(s=>({...s,pts:state.points[s.id]||0}))
+      .filter(s=>s.pts>0)
+      .sort((a,b)=>b.pts-a.pts || a.name.localeCompare(b.name))
+      .slice(0,n);
+  }
+  function timeAgo(ts){
+    const s=Math.floor((Date.now()-ts)/1000);
+    if(s<60)return "just now";
+    if(s<3600)return Math.floor(s/60)+"m ago";
+    if(s<86400)return Math.floor(s/3600)+"h ago";
+    return Math.floor(s/86400)+"d ago";
+  }
+
+  // ---------- actions ----------
+  async function adjust(studentId, delta){
+    if(!edit) return;
+    const s = sid(studentId); if(!s) return;
+    const cur = state.points[studentId]||0;
+    const newP = Math.max(0, cur + delta);
+    const applied = newP - cur;            // real change after clamping at 0
+    if(applied === 0) return;
+    state.points[studentId] = newP;
+    const cn = state.classNum;
+    state.dayPoints[cn] = state.dayPoints[cn]||{};
+    state.dayPoints[cn][studentId] = Math.max(0, (state.dayPoints[cn][studentId]||0) + applied);
+    state.log.unshift({id:Math.random().toString(36).slice(2), name:s.name, teamId:s.teamId, amount:applied, classNum:cn, ts:Date.now()});
+    state.log = state.log.slice(0,40);
+    render(); await save();
+  }
+  async function nextClass(){ state.classNum += 1; render(); await save(); }
+  async function prevClass(){ if(state.classNum>1){ state.classNum -= 1; render(); await save(); } }
+  async function resetDay(){
+    const cn = state.classNum;
+    if(!confirm("Reset today's scoring (class #"+cn+")? Points awarded during this class will be removed for everyone, this class's participation resets, and any special awards given today are cleared. Totals from earlier classes stay intact.")) return;
+    const dp = state.dayPoints[cn]||{};
+    Object.keys(dp).forEach(id=>{ state.points[id] = Math.max(0, (state.points[id]||0) - dp[id]); });
+    delete state.dayPoints[cn];
+    state.log = state.log.filter(l=>l.classNum!==cn);
+    state.awards = state.awards.filter(a=>a.classNum!==cn);
+    render(); await save();
+  }
+
+  // special awards
+  function openAwardForm(){
+    awardFormOpen = true; render();
+    requestAnimationFrame(()=>{ const i=document.getElementById('awardtitle'); if(i){ i.focus(); } });
+  }
+  function closeAwardForm(){
+    awardFormOpen = false; awardDraftTitle = ""; awardDraftRecipient = ""; render();
+  }
+  async function giveAward(){
+    const title = awardDraftTitle.trim();
+    if(!title){ const i=document.getElementById('awardtitle'); if(i){ i.focus(); } return; }
+    const rec = awardDraftRecipient ? sid(awardDraftRecipient) : null;
+    state.awards.unshift({
+      id: Math.random().toString(36).slice(2),
+      title,
+      recipientId: rec ? rec.id : "",
+      recipientName: rec ? rec.name : "",
+      teamId: rec ? rec.teamId : 0,
+      classNum: state.classNum,
+      ts: Date.now()
+    });
+    state.awards = state.awards.slice(0,100);
+    awardFormOpen = false; awardDraftTitle = ""; awardDraftRecipient = "";
+    render(); await save();
+  }
+  async function removeAward(id){
+    if(!confirm("Remove this special award for everyone?")) return;
+    state.awards = state.awards.filter(a=>a.id!==id);
+    render(); await save();
+  }
+  async function resetAll(){
+    if(!confirm("Reset the entire race for all time? Every point, class, and bit of history is cleared for everyone viewing this board. This cannot be undone.")) return;
+    state = blank(); render(); await save();
+  }
+  function toggleEdit(){
+    if(edit){ edit=false; render(); return; }
+    if(state.pin){
+      const p = prompt("Enter professor PIN to award points:");
+      if(p===null) return;
+      if(p!==state.pin){ alert("That PIN didn't match."); return; }
+    }
+    edit=true; render();
+  }
+  async function setPin(){
+    const p = prompt("Set a professor PIN (leave blank to remove the lock):", state.pin||"");
+    if(p===null) return;
+    state.pin = p.trim(); await save();
+    alert(state.pin ? "PIN set. Award controls now require it." : "PIN removed — board is open to edit.");
+    render();
+  }
+
+  // ---------- render ----------
+  function el(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+
+  function render(){
+    const totals = teamTotals();
+    const ranked = [...totals].sort((a,b)=>b.pts-a.pts);
+    const max = Math.max(10, ...totals.map(t=>t.pts));
+    const leaderId = ranked[0] && ranked[0].pts>0 ? ranked[0].id : null;
+    const rankMap = {}; ranked.forEach((t,i)=>rankMap[t.id]=i+1);
+
+    root.innerHTML = "";
+
+    if(noticeMsg){
+      const isDemo = /Demo mode/.test(noticeMsg);
+      root.appendChild(el(`<div class="notice ${isDemo?'demo':'err'}">${noticeMsg}</div>`));
+    }
+
+    // header
+    root.appendChild(el(`
+      <div class="top">
+        <div>
+          <div class="brandline"><span class="div"></span>EMBA Class of 2027 · Naveen Jindal School of Management</div>
+          <h1>Participation <span class="em">Grand&nbsp;Prix</span></h1>
+        </div>
+        <div style="text-align:right">
+          <span class="live"><span class="pulse"></span>Live</span>
+          <div class="updated" id="upd"></div>
+        </div>
+      </div>
+    `));
+
+    // session bar
+    const dots = TEAMS.map(t=>{
+      const inn = participatedThisClass(t.id);
+      return `<span class="sdot ${inn?'in':'out'}" style="--tc:${t.color}"><span class="bead"></span>${t.name}${inn?' ✓':''}</span>`;
+    }).join("");
+    root.appendChild(el(`
+      <div class="sessionbar">
+        <span class="sess-label">Class session</span>
+        <span class="sess-num">#${state.classNum}</span>
+        <div class="sess-dots">
+          <span class="sess-label" style="margin-right:2px">Spoken up this class:</span>
+          ${dots}
+        </div>
+      </div>
+    `));
+
+    // race
+    const lanes = ranked.map(t=>{
+      const pct = Math.round((t.pts/max)*100);
+      const isLeader = t.id===leaderId;
+      return `
+        <div class="lane ${isLeader?'leader':''}" style="--tc:${t.color}">
+          <div class="rank">${rankMap[t.id]}</div>
+          <div class="strip">
+            <div class="fill" style="width:${Math.max(pct, t.pts>0?8:6)}%"></div>
+            <div class="car" style="left:${Math.max(pct, t.pts>0?8:6)}%">
+              <span class="badge">${isLeader?'<span class="crown">👑</span>':'🏎️'}</span>
+              <span class="lanename">${t.name}</span>
+            </div>
+          </div>
+          <div class="pts">${t.pts}<small>points</small></div>
+        </div>`;
+    }).join("");
+    root.appendChild(el(`
+      <div class="panel">
+        <div class="panel-h">
+          <h2>🏁 The Grid</h2>
+          <span class="hint">Each team races on its total participation points · first to the flag leads</span>
+        </div>
+        <div class="track">${lanes}</div>
+      </div>
+    `));
+
+    // columns: award + individuals
+    const cols = el(`<div class="cols"></div>`);
+
+    // award panel
+    const awardPanel = el(`<div class="panel"></div>`);
+    const ahead = el(`<div class="panel-h"><h2>➕ Award points</h2></div>`);
+    if(edit){
+      const seg = el(`<div class="seg"></div>`);
+      [["First name","first"],["Last name","last"]].forEach(([label,v])=>{
+        const b = el(`<button class="segbtn ${nameSort===v?'active':''}">${label}</button>`);
+        b.onclick = ()=>{ nameSort=v; render(); };
+        seg.appendChild(b);
+      });
+      ahead.appendChild(seg);
+    } else {
+      ahead.appendChild(el(`<span class="hint">Professor view</span>`));
+    }
+    awardPanel.appendChild(ahead);
+    if(!edit){
+      const lock = el(`
+        <div class="locked">
+          <div class="ico">🔒</div>
+          <div>Spectator view. Points appear here live as the professor awards them.</div>
+          <button class="btn primary" id="unlock">I'm the professor — let me score</button>
+        </div>`);
+      awardPanel.appendChild(lock);
+      lock.querySelector('#unlock').onclick = toggleEdit;
+    } else {
+      const ros = el(`<div class="roster"></div>`);
+      const sorted = [...STUDENTS].sort((a,b)=>
+        nameSort==='last'
+          ? (lastName(a.name).localeCompare(lastName(b.name)) || a.name.localeCompare(b.name))
+          : a.name.localeCompare(b.name)
+      );
+      sorted.forEach(s=>{
+        const t = team(s.teamId);
+        const c = state.points[s.id]||0;
+        const row = el(`
+          <div class="srow" style="--tc:${t.color}">
+            <div class="ava">${initials(s.name)}</div>
+            <div class="snamewrap">
+              <div class="sname">${s.name}${s.name===ME?'<span class="me">you</span>':''}</div>
+              <div class="pteam">${t.name}</div>
+            </div>
+            <div class="scount ${c>0?'has':''}">${c}</div>
+            <div class="addbtns">
+              <button class="ab minus" data-a="-1" title="Remove a point (fix a mistake)">–1</button>
+              <button class="ab" data-a="1">+1</button>
+              <button class="ab" data-a="3">+3</button>
+              <button class="ab" data-a="5">+5</button>
+            </div>
+          </div>`);
+        row.querySelectorAll('.ab').forEach(b=> b.onclick=()=>adjust(s.id, parseInt(b.dataset.a,10)));
+        ros.appendChild(row);
+      });
+      awardPanel.appendChild(ros);
+    }
+    cols.appendChild(awardPanel);
+
+    // individuals
+    const indiv = el(`<div class="panel"></div>`);
+    const ihead = el(`<div class="panel-h"><h2>⭐ Top voices</h2></div>`);
+    const seg = el(`<div class="seg"></div>`);
+    [["Top 5",5],["Top 10",10],["All",Infinity]].forEach(([label,n])=>{
+      const b = el(`<button class="segbtn ${topN===n?'active':''}">${label}</button>`);
+      b.onclick = ()=>{ topN=n; render(); };
+      seg.appendChild(b);
+    });
+    ihead.appendChild(seg);
+    indiv.appendChild(ihead);
+    const top = topIndividuals(topN);
+    if(top.length===0){
+      indiv.appendChild(el(`<div class="empty">No points awarded yet. The leaderboard fills as people speak up.</div>`));
+    } else {
+      const list = el(`<div class="podium"></div>`);
+      top.forEach((s,i)=>{
+        const t=team(s.teamId);
+        list.appendChild(el(`
+          <div class="prow ${i<3?'top':''}" style="--tc:${t.color}">
+            <div class="prnk">${i+1}</div>
+            <div class="ava">${initials(s.name)}</div>
+            <div>
+              <div class="pname">${s.name}${s.name===ME?' <span class="me" style="font-size:10px;color:var(--orange-soft)">you</span>':''}</div>
+              <div class="pteam">${t.name}</div>
+            </div>
+            <div class="ppts">${s.pts}</div>
+          </div>`));
+      });
+      indiv.appendChild(list);
+    }
+    cols.appendChild(indiv);
+    root.appendChild(cols);
+
+    // special awards (replaces recent activity)
+    const awardsPanel = el(`<div class="panel"></div>`);
+    const ahead2 = el(`<div class="panel-h"><h2>🏅 Special awards</h2></div>`);
+    if(edit && !awardFormOpen){
+      const giveBtn = el(`<button class="btn primary sm">+ Give an award</button>`);
+      giveBtn.onclick = openAwardForm;
+      ahead2.appendChild(giveBtn);
+    } else if(!edit){
+      ahead2.appendChild(el(`<span class="hint">Recognition from the professor</span>`));
+    }
+    awardsPanel.appendChild(ahead2);
+
+    if(edit && awardFormOpen){
+      const form = el(`<div class="awardform"></div>`);
+      const input = el(`<input id="awardtitle" type="text" placeholder="Award title — e.g. Best Insight of the Day" maxlength="80">`);
+      input.value = awardDraftTitle;
+      input.oninput = ()=>{ awardDraftTitle = input.value; };
+      input.onkeydown = (e)=>{ if(e.key==='Enter'){ e.preventDefault(); giveAward(); } if(e.key==='Escape'){ closeAwardForm(); } };
+
+      const sel = el(`<select id="awardrec"></select>`);
+      sel.appendChild(el(`<option value="">— No specific recipient —</option>`));
+      [...STUDENTS].sort((a,b)=>a.name.localeCompare(b.name)).forEach(s=>{
+        const o = el(`<option value="${s.id}">${s.name} (${team(s.teamId).name})</option>`);
+        if(s.id===awardDraftRecipient) o.selected = true;
+        sel.appendChild(o);
+      });
+      sel.onchange = ()=>{ awardDraftRecipient = sel.value; };
+
+      const give = el(`<button class="btn primary sm">Give award</button>`); give.onclick = giveAward;
+      const cancel = el(`<button class="btn ghost sm">Cancel</button>`); cancel.onclick = closeAwardForm;
+      form.appendChild(input); form.appendChild(sel); form.appendChild(give); form.appendChild(cancel);
+      awardsPanel.appendChild(form);
+    }
+
+    if(state.awards.length===0){
+      awardsPanel.appendChild(el(`<div class="empty">${edit?'No special awards yet. Use “Give an award” to recognize a standout moment.':'No special awards yet.'}</div>`));
+    } else {
+      const list = el(`<div class="feed"></div>`);
+      state.awards.slice(0,30).forEach(a=>{
+        const t = a.teamId ? team(a.teamId) : null;
+        const who = a.recipientName
+          ? `<b>${a.recipientName}</b>${t?` · ${t.name}`:''}`
+          : `<span style="color:var(--muted2)">No recipient noted</span>`;
+        const item = el(`
+          <div class="award" style="--tc:${t?t.color:'var(--gold)'}">
+            <span class="medal">🏅</span>
+            <div class="awrap">
+              <div class="atitle">${a.title.replace(/</g,'&lt;')}</div>
+              <div class="arecipient">${who} · class #${a.classNum}</div>
+            </div>
+            <span class="when">${timeAgo(a.ts)}</span>
+            ${edit?'<button class="aremove" title="Remove award">✕</button>':''}
+          </div>`);
+        if(edit){ const rm=item.querySelector('.aremove'); if(rm) rm.onclick=()=>removeAward(a.id); }
+        list.appendChild(item);
+      });
+      awardsPanel.appendChild(list);
+    }
+    root.appendChild(awardsPanel);
+
+    // controls
+    const ctr = el(`<div class="controls"></div>`);
+    if(edit){
+      const next = el(`<button class="btn primary">End class #${state.classNum} → start #${state.classNum+1}</button>`);
+      next.onclick = nextClass;
+      ctr.appendChild(next);
+      if(state.classNum>1){ const pv=el(`<button class="btn ghost">↩ Back a class</button>`); pv.onclick=prevClass; ctr.appendChild(pv); }
+      const pin = el(`<button class="btn ghost"></button>`); pin.textContent = state.pin?'🔁 Change PIN':'🔑 Set PIN'; pin.onclick=setPin; ctr.appendChild(pin);
+      ctr.appendChild(el(`<span class="spacer"></span>`));
+      const rDay = el(`<button class="btn ghost danger"></button>`); rDay.textContent='Reset today (#'+state.classNum+')'; rDay.onclick=resetDay; ctr.appendChild(rDay);
+      const rAll = el(`<button class="btn ghost danger">Reset all time</button>`); rAll.onclick=resetAll; ctr.appendChild(rAll);
+      const done = el(`<button class="btn">Exit professor mode</button>`); done.onclick=toggleEdit; ctr.appendChild(done);
+    }
+    root.appendChild(ctr);
+
+    root.appendChild(el(`
+      <div class="note">
+        <b>How it works:</b> This board is shared — everyone who opens this page sees the same race, and it updates instantly across screens. The professor enters professor mode to award points; everyone else watches live. Points roll up from each student to their team total. Any team that hasn't spoken up in the current class shows an amber dot until someone does.
+      </div>`));
+
+    const upd=document.getElementById('upd'); if(upd) upd.textContent = "Updated "+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  // ---------- live sync ----------
+  function adoptRaw(raw){
+    if(raw===lastRaw) return;        // ignore our own echo
+    let next; try{ next = migrate(JSON.parse(raw)); }catch(e){ return; }
+    state = next; lastRaw = raw;
+    if(!awardFormOpen) render();      // don't yank the board out from under an open award form
+  }
+
+  function boot(){
+    initStore();
+    if(useFirebase){
+      noticeMsg = "";
+      render();
+      dbRef.on('value', snap=>{
+        const raw = snap.val();
+        if(raw==null){                // empty database -> seed once
+          state = blank(); lastRaw = JSON.stringify(state); save(); render();
+          return;
+        }
+        if(typeof raw==='string') adoptRaw(raw);
+      }, err=>{
+        console.error('Database read failed', err);
+        noticeMsg = "Can't reach the database. Double-check the databaseURL in your config and that read/write rules are allowed.";
+        render();
+      });
+    } else {
+      // No Firebase config yet -> run locally so the page still works
+      try{ const raw=localStorage.getItem(LKEY); if(raw){ state=migrate(JSON.parse(raw)); lastRaw=raw; } }catch(e){}
+      noticeMsg = "Demo mode — no database connected yet. Scores save only in this browser. Add your Firebase config near the top of index.html to enable shared saving across everyone's screens.";
+      render();
+    }
+  }
+  boot();
+})();
+</script>
